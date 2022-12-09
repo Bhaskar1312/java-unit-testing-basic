@@ -1,13 +1,11 @@
-import org.example.AuthenticatorDummy;
-import org.example.AuthenticatorSpy;
-import org.example.PromiscuousAuthenticatorStub;
-import org.example.RejectingAuthenticatorStub;
+import org.example.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginTest {
 
+    boolean CLOSE = true;
     @Test
     public void cancelLoginPage() throws Exception {
         LoginPage page = new LoginPage(new AuthenticatorDummy());
@@ -43,6 +41,26 @@ public class LoginTest {
         assertEquals(1, spy.getCount());
         assertEquals("user", spy.getLastUserName());
         assertEquals("pw", spy.getLastPassword());
+    }
+
+    @Test
+    public void authenticatorCallValidated() throws Exception {
+        AuthenticatorMock mock = new AuthenticatorMock("Bob", "xyzw", 1);
+        LoginPage page = new LoginPage(mock);
+        mock.setResult(true);
+        page.show();
+        boolean success = page.submit("Bob", "xyzw");
+        assertTrue(success);
+        assertTrue(mock.validate());
+    }
+
+    @Test
+    public void authenticatorFakePassForCertainValues() {
+        Authenticator fake = new AuthenticatorFake();
+        LoginPage page = new LoginPage(fake);
+        page.show();
+        boolean success = page.submit("uncleBob", "qwerty123");
+        assertTrue(success);
     }
 
 }

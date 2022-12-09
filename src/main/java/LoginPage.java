@@ -8,4 +8,8 @@ public class LoginPage {
 
     public void show() {
     }
+
+    public boolean submit(String user, String password) {
+
+    }
 }
