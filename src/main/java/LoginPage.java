@@ -10,6 +10,10 @@ public class LoginPage {
     }
 
     public boolean submit(String user, String password) {
+        return false;
+    }
 
+    public boolean sendEvent(boolean close) {
+        return false;
     }
 }
